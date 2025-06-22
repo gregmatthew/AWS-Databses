@@ -1,0 +1,218 @@
+275-[DF]-Lab - Introduction to Amazon DynamoDB
+Introduction to Amazon DynamoDB Lab
+Lab Overview
+Amazon DynamoDB is a fast and flexible NoSQL database service designed for applications requiring consistent, single-digit millisecond latency at any scale. It is a fully managed database supporting both document and key-value data models, making it ideal for mobile, web, gaming, ad-tech, Internet of Things (IoT), and other applications.
+In this lab, you will:
+
+Create a DynamoDB table to store information about a music library.
+Add and modify data in the table.
+Query the table using both query and scan operations.
+Delete the DynamoDB table.
+
+Duration: Approximately 35 minutes.
+Topics Covered
+
+Creating an Amazon DynamoDB table
+Entering data into an Amazon DynamoDB table
+Querying an Amazon DynamoDB table
+Deleting an Amazon DynamoDB table
+
+Prerequisites
+
+Access to the AWS Management Console
+Basic understanding of database concepts
+
+Accessing the AWS Management Console
+
+In the lab environment, choose Start Lab at the upper-right corner.
+Troubleshooting: If you encounter an "Access Denied" error, close the error box and choose Start Lab again.
+
+
+Wait for the lab status to indicate readiness:
+Red circle: Lab has not started.
+Yellow circle: Lab is starting.
+Green circle: Lab is ready.
+
+
+Once the lab is ready, choose the green circle next to AWS to open the AWS Management Console in a new browser tab. You will be automatically signed in.
+Tip: If the tab does not open, check for a browser banner or icon indicating blocked pop-ups. Allow pop-ups to proceed.
+
+
+Arrange the AWS Management Console tab alongside the lab instructions for easy reference.
+Important: Do not change the lab Region unless instructed.
+
+Task 1: Create a New Table
+In this task, you create a DynamoDB table named Music with a partition key and sort key to uniquely identify items.
+
+In the AWS Management Console, select the Services menu, then under Database, choose DynamoDB.
+Choose Create table.
+Configure the table:
+Table name: Enter Music.
+Partition key: Enter Artist (leave as String).
+Sort key (optional): Enter Song (leave as String).
+
+
+Use the default settings for indexes and provisioned capacity.
+Scroll down and choose Create table.
+Wait for the Music table to become Active (takes less than 1 minute) before proceeding.
+
+Task 2: Add Data
+In this task, you add items to the Music table. Each item represents a song with attributes like Artist and Song (required) and optional attributes like Album or Year.
+Add First Item
+
+Select the Music table.
+Choose Actions > Create item.
+Enter required attributes:
+Artist: Pink Floyd
+Song: Money
+
+
+Add additional attributes:
+Choose Add new attribute > String.
+Field: Album, Value: The Dark Side of the Moon.
+Choose Add new attribute > Number.
+Field: Year, Value: 1973.
+
+
+Choose Create item to add the item.
+
+Add Second Item
+
+Repeat the process to create a second item with the following attributes:
+
+
+
+
+Attribute Name
+Attribute Type
+Attribute Value
+
+
+
+Artist
+String
+John Lennon
+
+
+Song
+String
+Imagine
+
+
+Album
+String
+Imagine
+
+
+Year
+Number
+1971
+
+
+Genre
+String
+Soft rock
+
+
+Note: The Genre attribute demonstrates DynamoDB's schema flexibility, as it’s not present in other items.
+Add Third Item
+
+Create a third item with the following attributes:
+
+
+
+
+Attribute Name
+Attribute Type
+Attribute Value
+
+
+
+Artist
+String
+Psy
+
+
+Song
+String
+Gangnam Style
+
+
+Album
+String
+Psy 6 (Six Rules), Part 1
+
+
+Year
+Number
+2011
+
+
+LengthSeconds
+Number
+219
+
+
+Note: The LengthSeconds attribute further showcases DynamoDB's ability to handle varying attributes per item.
+Additional Info: For larger datasets, you can load data faster using the AWS CLI, programmatic scripts, or third-party tools.
+Task 3: Modify an Existing Item
+In this task, you correct an error in the Year attribute for the Psy item.
+
+In the DynamoDB dashboard, under Tables, choose Explore Items.
+Select the Music table.
+Find and select the item with Artist: Psy.
+Change the Year from 2011 to 2012.
+Choose Save changes to update the item.
+
+Task 4: Query the Table
+In this task, you retrieve data using both query and scan operations.
+Query Operation
+
+In the Music table, expand Scan/Query items and choose Query.
+Enter:
+Artist (Partition key): Psy
+Song (Sort key): Gangnam Style
+
+
+Choose Run to retrieve the item.
+Note: Queries are efficient as they use the primary key index.
+
+
+
+Scan Operation
+
+Scroll up and choose Scan.
+Expand Filters and enter:
+Attribute name: Year
+Type: Number
+Value: 1971
+
+
+Choose Run to display only the item with Year = 1971.
+Note: Scans are less efficient as they examine every item in the table.
+
+
+
+Task 5: Delete the Table
+In this task, you delete the Music table and all its data.
+
+In the DynamoDB dashboard, under Tables, select Update settings.
+Ensure the Music table is selected.
+Choose Actions > Delete table.
+In the confirmation panel, enter delete and choose Delete table.
+
+Conclusion
+You have successfully:
+
+Created an Amazon DynamoDB table
+Entered and modified data in the table
+Queried the table using query and scan operations
+Deleted the DynamoDB table
+
+For more details, refer to the DynamoDB documentation.
+Ending the Lab
+
+Choose End Lab at the top of the lab page.
+Select Yes to confirm.
+An "Ended AWS Lab Successfully" message will confirm the lab has ended.
+
