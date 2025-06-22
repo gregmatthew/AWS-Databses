@@ -1,0 +1,307 @@
+271-[DF]-Lab - Performing a Conditional Search
+AWS Lab: Performing a Conditional Search
+
+This lab, titled 271-[DF]-Lab - Performing a Conditional Search, guides users through querying a relational database named world using SQL SELECT statements and WHERE clauses. The database contains three tables: city, country, and countrylanguage. The lab focuses on filtering records in the country table with various operators and functions.
+
+Scenario
+
+The database operations team has created a relational database called world. Your task is to assist the team by writing SQL queries to search for records in the country table using SELECT statements and WHERE clauses.
+
+Lab Overview and Objectives
+
+This lab demonstrates how to use the SELECT statement and WHERE clause to perform conditional searches. After completing this lab, you will be able to:
+
+
+
+
+
+Write search conditions using the WHERE clause
+
+
+
+Use the BETWEEN operator
+
+
+
+Use the LIKE operator with wildcard characters
+
+
+
+Use the AS operator to create column aliases
+
+
+
+Use functions in SELECT statements
+
+
+
+Use functions in WHERE clauses
+
+Preconfigured Resources
+
+
+
+
+
+Command Host: An Amazon EC2 instance with a database client installed
+
+
+
+Database: world
+
+
+
+Tables: city, country, countrylanguage
+
+Tools and Clauses Covered
+
+
+
+
+
+Clauses: WHERE
+
+
+
+Operators: BETWEEN, LIKE
+
+
+
+Functions: SUM(), LOWER()
+
+
+
+Commands: AS
+
+Duration
+
+Approximately 45 minutes
+
+Data Source
+
+Sample data is sourced from Statistics Finland, General regional statistics, downloaded on February 4, 2022, under the Creative Commons Attribution 4.0 International license.
+
+Accessing the AWS Management Console
+
+
+
+
+
+Choose Start Lab in the upper-right corner of the lab instructions.
+
+
+
+
+
+Troubleshooting: If an Access Denied error appears, close the error box and try again.
+
+
+
+Wait for the lab status to show a green circle next to AWS, indicating the lab is ready.
+
+
+
+Open the AWS Management Console by selecting the green circle. This opens a new browser tab with automatic sign-in.
+
+
+
+
+
+Tip: If the tab doesn’t open, allow pop-ups in your browser settings.
+
+
+
+Arrange the AWS Management Console tab alongside the lab instructions for easy reference.
+
+
+
+
+
+Note: Do not change the AWS Region unless instructed.
+
+Task 1: Connect to the Command Host
+
+In this task, you connect to an Amazon EC2 instance (Command Host) with a database client to query the world database.
+
+
+
+
+
+In the AWS Management Console, navigate to Services > Compute > EC2.
+
+
+
+In the left navigation menu, select Instances.
+
+
+
+Select the instance labeled Command Host, then choose Connect.
+
+
+
+
+
+Note: If the Command Host is not visible, wait for the lab to finish provisioning or verify the Region.
+
+
+
+On the Session Manager tab, choose Connect to open a terminal window.
+
+
+
+
+
+Note: If the Connect button is unavailable, wait a few minutes and try again.
+
+
+
+Configure the terminal by running:
+
+sudo su
+cd /home/ec2-user/
+
+
+
+
+
+Tip: On Windows, use Shift+Ctrl+V to paste commands.
+
+
+
+Connect to the database server with:
+
+mysql -u root --password='re:Start19'
+
+
+
+
+
+Reconnection Tip: If the Session Manager window is unresponsive, close it, reconnect via Session Manager, and rerun the above commands.
+
+Task 2: Query the World Database
+
+In this task, you write SQL queries to explore the world database using SELECT statements, WHERE clauses, and functions.
+
+
+
+
+
+Show Available Databases
+Verify the world database exists by running:
+
+SHOW DATABASES;
+
+
+
+
+
+If world is not listed, contact your instructor.
+
+
+
+Review the Country Table
+Examine the schema, data, and row count of the country table:
+
+SELECT * FROM world.country;
+
+
+
+Filter Records with WHERE and AND
+Reduce the result set by filtering countries with populations between 50 million and 100 million:
+
+SELECT Name, Capital, Region, SurfaceArea, Population
+FROM world.country
+WHERE Population >= 50000000 AND Population <= 100000000;
+
+
+
+Use the BETWEEN Operator
+Rewrite the previous query using BETWEEN for readability:
+
+SELECT Name, Capital, Region, SurfaceArea, Population
+FROM world.country
+WHERE Population BETWEEN 50000000 AND 100000000;
+
+
+
+
+
+Note: BETWEEN is inclusive of the start and end values.
+
+
+
+Use LIKE and SUM for European Countries
+Calculate the total population of European countries using LIKE and SUM:
+
+SELECT SUM(Population)
+FROM world.country
+WHERE Region LIKE '%Europe%';
+
+
+
+
+
+Note: The % wildcard matches any characters before or after "Europe".
+
+
+
+Add a Column Alias with AS
+Enhance the previous query with a column alias for better readability:
+
+SELECT SUM(Population) AS "Europe Population Total"
+FROM world.country
+WHERE Region LIKE '%Europe%';
+
+
+
+Case-Sensitive Search with LOWER
+Perform a case-insensitive search for regions containing "central":
+
+SELECT Name, Capital, Region, SurfaceArea, Population
+FROM world.country
+WHERE LOWER(Region) LIKE '%central%';
+
+
+
+
+
+Note: SQL is generally case-insensitive, but database collation may enforce case sensitivity. Using LOWER ensures consistent comparison.
+
+Challenge
+
+Write a query to calculate the sum of the surface area and population for countries in North America.
+
+Steps:
+
+
+
+
+
+Query the country table to identify relevant columns (SurfaceArea, Population, Region).
+
+
+
+Use SUM() to aggregate SurfaceArea and Population.
+
+
+
+Filter for North America using LIKE or an exact match for Region.
+
+Example Solution:
+
+SELECT SUM(SurfaceArea) AS "North America Surface Area Total",
+       SUM(Population) AS "North America Population Total"
+FROM world.country
+WHERE Region LIKE '%North America%';
+
+Ending the Lab
+
+
+
+
+
+Choose End Lab at the top of the lab page and select Yes to confirm.
+
+
+
+Wait for the Ended AWS Lab Successfully message.
