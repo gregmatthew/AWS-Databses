@@ -1,0 +1,208 @@
+274-[DF]-Lab - Introduction to Amazon Aurora
+Introduction to Amazon Aurora Lab
+Overview
+This lab introduces Amazon Aurora, a MySQL-compatible relational database engine, and guides you through creating an Aurora instance, connecting to it via an Amazon EC2 instance, and performing basic queries. The lab takes approximately 40 minutes to complete.
+Objectives
+After completing this lab, you will be able to:
+
+Create an Aurora instance
+Connect to a pre-created Amazon EC2 instance
+Configure the EC2 instance to connect to Aurora
+Query the Aurora instance
+
+Prerequisites
+
+Basic experience with Linux operating system
+Fundamental understanding of Structured Query Language (SQL)
+
+AWS Service Restrictions
+Access to AWS services in this lab environment is limited to those required for the lab. Attempting to access other services or actions may result in errors.
+Accessing the AWS Management Console
+
+Choose Start Lab in the upper-right corner of the lab instructions.
+Note: If an "Access Denied" error appears, close the error box and try again.
+
+
+Wait for the lab status to show a green circle next to "AWS," indicating the lab is ready.
+Select the green circle to open the AWS Management Console in a new browser tab.
+Note: If the tab doesn’t open, allow pop-ups in your browser settings.
+
+
+Arrange the AWS Management Console tab alongside the lab instructions for easy reference.
+Caution: Do not change the AWS Region unless instructed.
+
+
+
+Technologies Introduced
+
+Amazon Aurora: A fully managed, MySQL-compatible database engine offering up to five times the performance of MySQL with open-source cost-effectiveness.
+Amazon EC2: A web service providing resizable compute capacity in the cloud, enabling quick scaling.
+Amazon RDS: A service that simplifies relational database setup, operation, and scaling, supporting multiple engines including Aurora.
+
+Task 1: Create an Aurora Instance
+
+In the AWS Management Console, search for RDS and select it.
+Navigate to Databases in the left menu and choose Create database.
+Configure the following options:
+Database creation method: Standard create
+Engine type: Aurora (MySQL Compatible)
+Engine version: Default for major version 8.0
+Templates: DevTest
+
+
+In the Settings section:
+DB cluster identifier: aurora
+Master username: admin
+Master password: admin123
+Confirm password: admin123
+
+
+In the Instance configuration section:
+DB instance class: Burstable classes, select db.t3.medium
+
+
+In the Availability & durability section:
+Multi-AZ deployment: Don’t create an Aurora Replica
+Note: Multi-AZ is ideal for production but not needed in this lab.
+
+
+In the Connectivity section:
+VPC: LabVPC
+Subnet group: dbsubnetgroup
+Public access: No
+VPC security group: Choose existing, select DBSecurityGroup (remove default)
+Note: Subnets and DB subnet groups organize resources in a VPC for security and operational needs.
+
+
+In the Monitoring section, disable Enhanced monitoring.
+In the Additional configuration section, set Initial database name to world.
+In the Encryption section, disable Enable encryption.
+Note: Encryption secures data at rest but is not required for this lab.
+
+
+In the Maintenance section, disable Enable auto minor version upgrade.
+Choose Create database.
+Note: The Aurora instance may take up to 5 minutes to launch. You can proceed to the next task while it provisions.
+A success message will appear once the database is created.
+
+
+
+Task Complete: You have created an Aurora instance.
+Task 2: Connect to an Amazon EC2 Linux Instance
+
+Search for EC2 in the AWS Management Console and select it.
+Navigate to Instances in the left menu.
+Select the instance labeled Command Host and choose Connect.
+Note: If the instance isn’t visible, the lab may still be provisioning or you’re in the wrong Region.
+
+
+Choose Session Manager and select Connect to open a terminal window.
+Note: If the Connect button is unavailable, wait a few minutes and retry.
+
+
+
+Task Complete: You have connected to the EC2 instance named Command Host.
+Task 3: Configure the EC2 Instance to Connect to Aurora
+
+Install the MariaDB client to connect to the Aurora instance:sudo yum install mariadb -y
+
+Expected Output:Install 1 Package
+Total download size: 8.8 M
+Installed size: 49 M
+...
+Installed:
+  mariadb.x86_64 1:5.5.68-1.amzn2.0.1
+Complete!
+
+
+In a new browser tab, return to the AWS Management Console, search for RDS, and select Databases.
+Wait for aurora-instance-1 to show as Available.
+Select the aurora database, go to the Connectivity & security tab, and copy the Writer instance Endpoint (e.g., aurora-cluster-cabcdefghjiklm.us-west-2.rds.amazonaws.com).
+Note: The cluster endpoint supports write operations and failover, while the reader endpoint is for read-only queries.
+
+
+Edit the following command, replacing <endpoint_goes_here> with the copied endpoint:mysql -u admin --password='admin123' -h <endpoint_goes_here>
+
+Example:mysql -u admin --password='admin123' -h aurora-cluster-cabcdefghjiklm.us-west-2.rds.amazonaws.com
+
+
+Run the edited command in the Session Manager terminal to connect to the Aurora instance.Expected Output:Welcome to the MariaDB monitor. Commands end with ; or \g.
+...
+MariaDB [(none)]>
+
+
+
+Task Complete: You have configured the EC2 instance to connect to the Aurora database.
+Task 4: Create a Table, Insert, and Query Records
+
+List available databases:SHOW DATABASES;
+
+Expected Output:+--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| world              |
++--------------------+
+2 rows in set (0.00 sec)
+
+
+Select the world database:USE world;
+
+
+Create a country table:CREATE TABLE `country` (
+    `Code` CHAR(3) NOT NULL DEFAULT '',
+    `Name` CHAR(52) NOT NULL DEFAULT '',
+    `Continent` ENUM('Asia', 'Europe', 'North America', 'Africa', 'Oceania', 'Antarctica', 'South America') NOT NULL DEFAULT 'Asia',
+    `Region` CHAR(26) NOT NULL DEFAULT '',
+    `SurfaceArea` FLOAT(10,2) NOT NULL DEFAULT '0.00',
+    `IndepYear` SMALLINT(6) DEFAULT NULL,
+    `Population` INT(11) NOT NULL DEFAULT '0',
+    `LifeExpectancy` FLOAT(3,1) DEFAULT NULL,
+    `GNP` FLOAT(10,2) DEFAULT NULL,
+    `GNPOld` FLOAT(10,2) DEFAULT NULL,
+    `LocalName` CHAR(45) NOT NULL DEFAULT '',
+    `GovernmentForm` CHAR(45) NOT NULL DEFAULT '',
+    `Capital` INT(11) DEFAULT NULL,
+    `Code2` CHAR(2) NOT NULL DEFAULT '',
+    PRIMARY KEY (`Code`)
+);
+
+Expected Output:Query OK, 0 rows affected, 7 warnings (0.02 sec)
+
+
+Insert records into the country table:INSERT INTO `country` VALUES ('GAB', 'Gabon', 'Africa', 'Central Africa', 267668.00, 1960, 1226000, 50.1, 5493.00, 5279.00, 'Le Gabon', 'Republic', 902, 'GA');
+INSERT INTO `country` VALUES ('IRL', 'Ireland', 'Europe', 'British Islands', 70273.00, 1921, 3775100, 76.8, 75921.00, 73132.00, 'Ireland/Eire', 'Republic', 1447, 'IE');
+INSERT INTO `country` VALUES ('THA', 'Thailand', 'Asia', 'Southeast Asia', 513115.00, 1350, 61399000, 65.6, 116416.00, 153907.00, 'Prathet Thai', 'Constitutional Monarchy', 3320, 'TH');
+INSERT INTO `country` VALUES ('CRI', 'Costa Rica', 'North America', 'Central America', 51100.00, 1821, 4023000, 75.8, 10226.00, 9757.00, 'Costa Rica', 'Republic', 584, 'CR');
+INSERT INTO `country` VALUES ('AUS', 'Australia', 'Oceania', 'Australia and New Zealand', 7741220.00, 1901, 18886000, 79.8, 351182.00, 392911.00, 'Australia', 'Constitutional Monarchy, Federation', 135, 'AU');
+
+Expected Output (for each insert):Query OK, 1 row affected (0.00 sec)
+
+
+Query the country table for countries with GNP > 35,000 and population > 10,000,000:SELECT * FROM country WHERE GNP > 35000 AND Population > 10000000;
+
+Expected Output:+------+----------+-----------+----------------------+-------------+-----------+------------+----------------+----------+----------+-------------+----------------------------------+---------+-------+
+| Code | Name     | Continent | Region               | SurfaceArea | IndepYear | Population | LifeExpectancy | GNP      | GNPOld   | LocalName   | GovernmentForm                   | Capital | Code2 |
++------+----------+-----------+----------------------+-------------+-----------+------------+----------------+----------+----------+-------------+----------------------------------+---------+-------+
+| THA  | Thailand | Asia      | Southeast Asia       | 513115.00   | 1350      | 61399000   | 65.6           | 116416.00| 153907.00| Prathet Thai| Constitutional Monarchy          | 3320    | TH    |
+| AUS  | Australia| Oceania   | Australia and New Zealand | 7741220.00 | 1901  | 18886000   | 79.8           | 351182.00| 392911.00| Australia   | Constitutional Monarchy, Federation | 135  | AU    |
++------+----------+-----------+----------------------+-------------+-----------+------------+----------------+----------+----------+-------------+----------------------------------+---------+-------+
+2 rows in set (0.00 sec)
+
+
+
+Task Complete: You have created a table, inserted data, and queried the Aurora instance.
+Conclusion
+You have successfully:
+
+Created an Aurora instance
+Connected to a pre-created Amazon EC2 instance
+Configured the EC2 instance to connect to Aurora
+Queried the Aurora instance
+
+To end the lab:
+
+Choose End Lab at the top of the lab page and confirm with Yes.
+A message will confirm the lab has ended.
+
+Lab Complete
