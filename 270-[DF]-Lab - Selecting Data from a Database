@@ -1,0 +1,221 @@
+270-[DF]-Lab - Selecting Data from a Database
+270-[DF]-Lab: Selecting Data from a Database
+
+Overview
+
+This lab focuses on using the SELECT statement and common database operators to query a relational database named world, which contains three tables: city, country, and countrylanguage. The lab demonstrates practical database querying skills using a MySQL database hosted on an AWS Command Host instance.
+
+Scenario
+
+The database operations team has provided a world database. The task is to write SQL queries using the SELECT statement and operators to extract data based on specific use cases.
+
+Objectives
+
+After completing this lab, you will be able to:
+
+
+
+
+
+Use the SELECT statement to query a database.
+
+
+
+Use the COUNT() function.
+
+
+
+Apply the following operators: WHERE, ORDER BY, and AND.
+
+Duration
+
+Approximately 45 minutes.
+
+Prerequisites
+
+
+
+
+
+A Command Host instance with a MySQL database client.
+
+
+
+A world database with city, country, and countrylanguage tables.
+
+
+
+AWS Management Console access with Session Manager for terminal connections.
+
+Lab Setup
+
+Accessing the AWS Management Console
+
+
+
+
+
+Start the lab by selecting Start Lab in the AWS Management Console.
+
+
+
+Wait for the lab status to show a green circle, indicating readiness.
+
+
+
+Open the AWS Management Console in a new browser tab.
+
+
+
+Arrange browser tabs to view instructions and the console simultaneously.
+
+
+
+Note: Do not change the AWS Region unless instructed.
+
+Task 1: Connect to the Command Host
+
+
+
+
+
+In the AWS Management Console, navigate to Services > Compute > EC2.
+
+
+
+Select Instances from the left navigation menu.
+
+
+
+Check the box next to the instance labeled Command Host and choose Connect.
+
+
+
+On the Session Manager tab, select Connect to open a terminal window.
+
+
+
+Run the following commands to configure the terminal:
+
+sudo su
+cd /home/ec2-user/
+
+
+
+Connect to the MySQL database using:
+
+mysql -u root --password='re:stärt!9'
+
+
+
+Tip: If the Session Manager is unresponsive, close the window, reconnect, and rerun the above commands.
+
+Task 2: Query the World Database
+
+In this task, you will query the world database using SELECT statements and various operators.
+
+
+
+
+
+Show Existing Databases
+Verify the world database exists:
+
+SHOW DATABASES;
+
+
+
+List All Rows and Columns in the Country Table
+Retrieve all data from the country table:
+
+SELECT * FROM world.country;
+
+
+
+Count Rows in the Country Table
+Use the COUNT() function to count all rows:
+
+SELECT COUNT(*) FROM world.country;
+
+
+
+Display Table Schema
+View the columns in the country table:
+
+SHOW COLUMNS FROM world.country;
+
+
+
+Query Specific Columns
+Select specific columns from the country table:
+
+SELECT Name, Capital, Region, SurfaceArea, Population FROM world.country;
+
+
+
+Rename Column in Output
+Use the AS clause to rename SurfaceArea to Surface Area:
+
+SELECT Name, Capital, Region, SurfaceArea AS "Surface Area", Population FROM world.country;
+
+
+
+Order Results by Population (Ascending)
+Sort the results by Population in ascending order:
+
+SELECT Name, Capital, Region, SurfaceArea AS "Surface Area", Population FROM world.country ORDER BY Population;
+
+
+
+Order Results by Population (Descending)
+Sort the results by Population in descending order:
+
+SELECT Name, Capital, Region, SurfaceArea AS "Surface Area", Population FROM world.country ORDER BY Population DESC;
+
+
+
+Filter Results with WHERE Clause
+List countries with a population greater than 50,000,000, sorted by population in descending order:
+
+SELECT Name, Capital, Region, SurfaceArea AS "Surface Area", Population FROM world.country WHERE Population > 50000000 ORDER BY Population DESC;
+
+
+
+Combine Conditions with AND Operator
+List countries with a population between 50,000,000 and 100,000,000, sorted by population in descending order:
+
+SELECT Name, Capital, Region, SurfaceArea AS "Surface Area", Population FROM world.country WHERE Population > 50000000 AND Population < 100000000 ORDER BY Population DESC;
+
+Challenge
+
+Query the country table to answer the following question:
+
+
+
+
+
+Which country in Southern Europe has a population greater than 50,000,000?
+
+Solution:
+
+SELECT Name, Capital, Region, SurfaceArea AS "Surface Area", Population 
+FROM world.country 
+WHERE Region = 'Southern Europe' AND Population > 50000000;
+
+Conclusion
+
+In this lab, you successfully:
+
+
+
+
+
+Used the SELECT statement to query the world database.
+
+
+
+Applied the COUNT() function to count rows.
+
+
+
+Utilized the WHERE, ORDER BY, and AND operators to filter and sort data.
