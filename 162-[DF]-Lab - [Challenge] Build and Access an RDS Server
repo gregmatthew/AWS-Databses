@@ -1,0 +1,167 @@
+162-[DF]-Lab - [Challenge] Build and Access an RDS Server
+Challenge Lab: Build and Access an AWS RDS Server
+This document outlines the steps to complete a challenge lab for building and interacting with an Amazon RDS database server using the AWS Management Console. The lab includes creating a database, setting up tables, inserting data, querying data, and performing a join operation.
+Objectives
+
+Create an Amazon RDS database instance.
+Install a MySQL client and connect to the database.
+Create and populate tables with sample data.
+Perform SQL queries and joins.
+Capture screenshots for submission.
+
+Prerequisites
+
+Access to the AWS Management Console.
+Basic understanding of SQL and MySQL.
+A MySQL client (e.g., MySQL Workbench or command-line client).
+
+Accessing the AWS Management Console
+
+Open the lab panel, which displays the lab environment.
+At the top of the instructions, click the AWS button to access the AWS Management Console.
+Arrange the AWS Management Console tab side-by-side with the lab instructions for easier navigation.
+
+Your Challenge
+Follow these steps to complete the lab:
+
+Create an Amazon RDS Database Instance
+
+Navigate to the RDS service in the AWS Management Console.
+Create a new RDS instance (e.g., MySQL engine).
+Configure the instance settings (e.g., instance type, storage, credentials).
+Ensure the instance is publicly accessible and note the endpoint for connection.
+
+
+Install a MySQL Client
+
+Install a MySQL client on your local machine (e.g., MySQL Workbench or command-line client).
+Use the client to connect to your RDS database using the endpoint, username, and password configured during setup.
+Helpful resource: AWS RDS MySQL Connection Guide.
+
+
+Create a Table: STUDENT_DETAILS
+
+Create a table named STUDENT_DETAILS with the following columns:
+Student_ID (Number, e.g., INTEGER, Primary Key)
+Student_Name (String, e.g., VARCHAR(100))
+Resident_City (String, e.g., VARCHAR(100))
+Graduation_Date (DateTime, e.g., DATETIME)
+
+
+Example SQL:CREATE TABLE STUDENT_DETAILS (
+    Student_ID INT PRIMARY KEY,
+    Student_Name VARCHAR(100),
+    Resident_City VARCHAR(100),
+    Graduation_Date DATETIME
+);
+
+
+Capture a screenshot of the table creation for submission.
+
+
+Insert Sample Data into STUDENT_DETAILS
+
+Insert 10 sample rows into the STUDENT_DETAILS table.
+Example SQL:INSERT INTO STUDENT_DETAILS (Student_ID, Student_Name, Resident_City, Graduation_Date) VALUES
+(1, 'John Doe', 'New York', '2023-06-15 00:00:00'),
+(2, 'Jane Smith', 'Los Angeles', '2023-05-20 00:00:00'),
+(3, 'Alice Johnson', 'Chicago', '2024-01-10 00:00:00'),
+(4, 'Bob Brown', 'Houston', '2023-12-05 00:00:00'),
+(5, 'Emma Davis', 'Phoenix', '2024-03-22 00:00:00'),
+(6, 'Michael Wilson', 'San Antonio', '2023-07-30 00:00:00'),
+(7, 'Sarah Taylor', 'San Diego', '2024-02-14 00:00:00'),
+(8, 'David Lee', 'Dallas', '2023-11-11 00:00:00'),
+(9, 'Laura Martinez', 'San Jose', '2024-04-01 00:00:00'),
+(10, 'James Clark', 'Austin', '2023-09-25 00:00:00');
+
+
+Capture a screenshot of the inserted data for submission.
+
+
+Query STUDENT_DETAILS
+
+Select all rows from the STUDENT_DETAILS table.
+Example SQL:SELECT * FROM STUDENT_DETAILS;
+
+
+Capture a screenshot of the query results for submission.
+
+
+Create a Table: CLOUD_PRACTITIONER
+
+Create a table named CLOUD_PRACTITIONER with the following columns:
+Student_ID (Number, e.g., INTEGER, Foreign Key)
+Certification_Date (DateTime, e.g., DATETIME)
+
+
+Example SQL:CREATE TABLE CLOUD_PRACTITIONER (
+    Student_ID INT,
+    Certification_Date DATETIME,
+    FOREIGN KEY (Student_ID) REFERENCES STUDENT_DETAILS(Student_ID)
+);
+
+
+Capture a screenshot of the table creation for submission.
+
+
+Insert Sample Data into CLOUD_PRACTITIONER
+
+Insert 5 sample rows into the CLOUD_PRACTITIONER table.
+Example SQL:INSERT INTO CLOUD_PRACTITIONER (Student_ID, Certification_Date) VALUES
+(1, '2023-07-01 00:00:00'),
+(2, '2023-06-25 00:00:00'),
+(3, '2024-02-01 00:00:00'),
+(4, '2023-12-15 00:00:00'),
+(5, '2024-04-10 00:00:00');
+
+
+Capture a screenshot of the inserted data for submission.
+
+
+Query CLOUD_PRACTITIONER
+
+Select all rows from the CLOUD_PRACTITIONER table.
+Example SQL:SELECT * FROM CLOUD_PRACTITIONER;
+
+
+Capture a screenshot of the query results for submission.
+
+
+Perform an Inner Join
+
+Perform an inner join between STUDENT_DETAILS and CLOUD_PRACTITIONER to display Student_ID, Student_Name, and Certification_Date.
+Example SQL:SELECT 
+    s.Student_ID,
+    s.Student_Name,
+    c.Certification_Date
+FROM STUDENT_DETAILS s
+INNER JOIN CLOUD_PRACTITIONER c ON s.Student_ID = c.Student_ID;
+
+
+Capture a screenshot of the join results for submission.
+
+
+
+Screenshots
+
+Placeholder for table creation screenshots: [Insert STUDENT_DETAILS creation screenshot here]
+Placeholder for data insertion screenshots: [Insert STUDENT_DETAILS data screenshot here]
+Placeholder for query screenshots: [Insert STUDENT_DETAILS query screenshot here]
+Placeholder for table creation screenshots: [Insert CLOUD_PRACTITIONER creation screenshot here]
+Placeholder for data insertion screenshots: [Insert CLOUD_PRACTITIONER data screenshot here]
+Placeholder for query screenshots: [Insert CLOUD_PRACTITIONER query screenshot here]
+Placeholder for join query screenshot: [Insert Inner Join query screenshot here]
+
+Lab Completion
+
+Congratulations! You have completed the lab.
+Click End Lab at the top of the lab page.
+Confirm by clicking Yes to end the activity.
+A panel will appear indicating "DELETE has been initiated... You may close this message box now."
+Click the X in the top right corner to close the panel.
+
+Notes
+
+Ensure all screenshots are clear and show the relevant output or configuration.
+Save your SQL scripts for reference and include them in your GitHub repository if desired.
+Clean up AWS resources after the lab to avoid incurring charges.
