@@ -1,0 +1,125 @@
+273-[DF]-Lab: Organizing Data
+Overview
+This lab focuses on using SQL clauses GROUP BY and OVER with common database functions to organize and analyze data in a relational database named world. The database contains three tables: city, country, and countrylanguage. The lab demonstrates grouping records for analysis using aggregate and window functions.
+Objectives
+After completing this lab, you will be able to:
+
+Use the GROUP BY clause with the SUM() aggregate function.
+Use the OVER clause with the RANK() window function.
+Use the OVER clause with the SUM() aggregate function and the RANK() window function.
+
+Prerequisites
+
+A Command Host instance with a database client.
+A world database containing the city, country, and countrylanguage tables.
+
+Lab Setup
+Accessing the AWS Management Console
+
+Choose Start Lab at the upper-right corner of the lab instructions.
+Troubleshooting: If an "Access Denied" error appears, close the error box and select Start Lab again.
+
+
+Wait for the lab status to show a green circle next to AWS, indicating the lab is ready.
+Select the green circle to open the AWS Management Console in a new browser tab.
+Tip: If the tab doesn't open, allow pop-ups in your browser settings.
+
+
+Arrange the AWS Management Console tab alongside the lab instructions for easy reference.
+
+Task 1: Connect to the Command Host
+
+In the AWS Management Console, navigate to Services > EC2 > Instances.
+Select the instance labeled Command Host and choose Connect.
+On the Session Manager tab, select Connect to open a terminal window.
+Note: If the Connect button is unavailable, wait a few minutes and try again.
+
+
+Run the following commands to configure the terminal:sudo su
+cd /home/ec2-user/
+
+
+Connect to the database server using:mysql -u root --password='re:Start19'
+
+
+Tip: On Windows, use Shift+Ctrl+V to paste commands.
+Reconnection: If the Session Manager is unresponsive, close it, reconnect via Session Manager, and rerun the above commands.
+
+
+
+Task 2: Query the World Database
+In this task, you will query the world database using SQL SELECT statements with various clauses and functions.
+
+Show Existing Databases:Verify the world database exists by running:
+SHOW DATABASES;
+
+
+Contact your instructor if the world database is not available.
+
+
+Review the Country Table:Examine the schema, data, and row count of the country table:
+SELECT * FROM world.country;
+
+
+Filter and Sort by Region:Retrieve records where the region is "Australia and New Zealand", sorted by population in descending order:
+SELECT Region, Name, Population
+FROM world.country
+WHERE Region = 'Australia and New Zealand'
+ORDER BY Population DESC;
+
+
+Use GROUP BY with SUM():Calculate the total population for the "Australia and New Zealand" region using GROUP BY:
+SELECT Region, SUM(Population)
+FROM world.country
+WHERE Region = 'Australia and New Zealand'
+GROUP BY Region
+ORDER BY SUM(Population) DESC;
+
+
+This query aggregates the population for the specified region.
+
+
+Use OVER with SUM() for Running Total:Generate a running total of populations within the "Australia and New Zealand" region:
+SELECT Region, Name, Population,
+       SUM(Population) OVER(PARTITION BY Region ORDER BY Population) AS "Running Total"
+FROM world.country
+WHERE Region = 'Australia and New Zealand';
+
+
+The OVER clause groups records by Region and computes a cumulative sum.
+
+
+Use OVER with SUM() and RANK():Add a rank to each country based on population within the region:
+SELECT Region, Name, Population,
+       SUM(Population) OVER(PARTITION BY Region ORDER BY Population) AS "Running Total",
+       RANK() OVER(PARTITION BY Region ORDER BY Population) AS "Ranked"
+FROM world.country
+WHERE Region = 'Australia and New Zealand';
+
+
+The RANK() function assigns a rank based on population order.
+
+
+
+Challenge
+Write a query to rank countries in each region by their population from largest to smallest.
+Solution
+To rank countries within each region by population in descending order, use the OVER clause with the RANK() function, partitioning by Region:
+SELECT Region, Name, Population,
+       RANK() OVER(PARTITION BY Region ORDER BY Population DESC) AS "Population Rank"
+FROM world.country;
+
+
+Explanation: The OVER clause with PARTITION BY Region groups records by region, and ORDER BY Population DESC ranks countries within each region from largest to smallest population. The RANK() function assigns rank numbers.
+
+Conclusion
+Congratulations! You have successfully:
+
+Used the GROUP BY clause with the SUM() aggregate function.
+Used the OVER clause with the RANK() window function.
+Used the OVER clause with the SUM() aggregate function and the RANK() window function.
+
+Cleanup
+
+Choose End Lab at the top of the lab page and select Yes to confirm.
+Verify the "Ended AWS Lab Successfully" message is displayed.
